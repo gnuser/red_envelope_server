@@ -1,0 +1,35 @@
+{
+    "debug": true,
+    "process": {
+        "file_limit": 1000000,
+        "core_limit": 1000000000
+    },
+    "log": {
+        "path": "/var/log/trade/el_http",
+        "flag": "fatal,error,warn,info,debug,trace",
+        "num": 10
+    },
+    "alert": {
+        "host": "accesshttp",
+        "addr": "127.0.0.1:5444"
+    },
+    "svr": {
+        "bind": [
+            "tcp@0.0.0.0:5080"
+        ],
+        "max_pkg_size": 102400
+    },
+    "monitor": {
+        "bind": "tcp@0.0.0.0:5081",
+        "max_pkg_size": 1024
+    },
+    "worker_num": 4,
+    "timeout": 1.0,
+    "envelope": {
+        "name": "envelope",
+        "addr": [
+            "tcp@127.0.0.1:5316"
+        ],
+        "max_pkg_size": 2000000
+    }
+}

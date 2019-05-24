@@ -1,0 +1,41 @@
+{
+    "debug": true,
+    "process": {
+        "file_limit": 1000000,
+        "core_limit": 1000000000
+    },
+    "log": {
+        "path": "/var/log/trade/envelope",
+        "flag": "fatal,error,warn,info,debug,trace",
+        "num": 10
+    },
+    "alert": {
+        "host": "envelope",
+        "addr": "127.0.0.1:5445"
+    },
+    "svr": {
+        "bind": [
+            "tcp@0.0.0.0:5316",
+            "udp@0.0.0.0:5316"
+        ],
+        "buf_limit": 100,
+        "max_pkg_size": 10240,
+        "heartbeat_check": false
+    },
+    "cli": "tcp@127.0.0.1:5317",
+    "db_log": {
+        "host": "172.31.166.157",
+        "user": "qpay",
+        "pass": "qpay890*()",
+        "name": "envelope"	    
+    },
+    "db_history": {
+        "host": "172.31.166.157",
+        "user": "qpay",
+        "pass": "qpay890*()",
+        "name": "trade_coin"	    
+    },
+    "slice_interval": 3600,
+    "slice_keeptime": 259200,
+    "accesshttp": "http://172.31.166.157:8081"
+}
