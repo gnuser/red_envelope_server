@@ -1,0 +1,104 @@
+{
+    "debug": true,
+    "process": {
+        "file_limit": 1000000,
+        "core_limit": 1000000000
+    },
+    "log": {
+        "path": "/var/log/trade/conversion",
+        "flag": "fatal,error,warn,info,debug,trace",
+        "num": 10
+    },
+    "alert": {
+        "host": "matchengine",
+        "addr": "127.0.0.1:4444"
+    },
+    "svr": {
+        "bind": [
+            "tcp@0.0.0.0:7316",
+            "udp@0.0.0.0:7316"
+        ],
+        "buf_limit": 100,
+        "max_pkg_size": 10240,
+        "heartbeat_check": false
+    },
+    "cli": "tcp@127.0.0.1:7317",
+    "db_log": {
+        "host": "172.31.166.157",
+        "user": "qpay",
+        "pass": "qpay890*()",
+        "name": "conversion_log"
+    },
+    "db_history": {
+        "host": "172.31.166.157",
+        "user": "qpay",
+        "pass": "qpay890*()",
+        "name": "conversion_history"
+    },
+    "db_bitasia": {
+        "host": "172.31.166.157",
+        "user": "qpay",
+        "pass": "qpay890*()",
+        "name": "trade_coin"
+    },
+    "redis": {
+        "name": "mymaster",
+        "addr": [
+            "172.16.233.251:26379",
+            "172.16.233.252:26380",
+            "172.16.233.253:26381"
+        ]
+    },
+    "assets": [
+        {
+            "name": "BTC",
+            "prec_save": 20,
+            "prec_show": 8
+        }, {
+            "name": "CNY",
+            "prec_save": 20,
+            "prec_show": 8
+        }, {
+            "name": "ETH",
+            "prec_save": 20,
+            "prec_show": 8
+        }, {
+            "name": "DAX",
+            "prec_save": 12,
+            "prec_show": 8
+        }, {
+            "name": "PNT",
+            "prec_save": 12,
+            "prec_show": 8
+        }
+    ],
+    "markets": [
+        {
+            "name": "BACCNY",
+            "stock": {
+                "name": "BAC",
+                "prec": 8
+            },
+            "money": {
+                "name": "CNY",
+                "prec": 8
+            },
+            "min_amount": "0.001"
+        }, {
+            "name": "BTCCNY",
+            "stock": {
+                "name": "BTC",
+                "prec": 8
+            },
+            "money": {
+                "name": "CNY",
+                "prec": 8
+            },
+            "min_amount": "0.001"
+        }
+    ],
+    "brokers": "128.1.1.1:9092",
+    "slice_interval": 3600,
+    "slice_keeptime": 259200,
+    "mainmarket": "172.31.166.157:8081"
+}
