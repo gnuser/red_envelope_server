@@ -587,9 +587,9 @@ int envelope_put(bool real, json_t **result, market_t *m, uint32_t user_id, cons
         left_mp = decimal(supply, 8);
         mpd_t *temp_mp = mpd_new(&mpd_ctx);
 
+        srand((unsigned)(create_time));
         for (size_t i = share; i > 1; --i)
         {
-            srand((unsigned)(create_time));
             double deno = rand() / (double)(RAND_MAX / share) + 1.0;
 
             char str_deno[24] = {0};

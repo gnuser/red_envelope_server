@@ -120,9 +120,9 @@ int load_orders(MYSQL *conn, const char *table, market_t *market)
         left_mp = decimal(str_supply, 8);
         mpd_t *temp_mp = mpd_new(&mpd_ctx);
 
+        srand((unsigned)(order->create_time));
         for (size_t i = order->share; i > 1; --i)
         {
-            srand((unsigned)(order->create_time));
             double deno = rand() / (double)(RAND_MAX / order->share) + 1.0;
 
             char str_deno[24] = {0};
