@@ -123,7 +123,17 @@ int load_orders(MYSQL *conn, const char *table, market_t *market)
         srand((unsigned)(order->create_time));
         for (size_t i = order->share; i > 1; --i)
         {
-            double deno = rand() / (double)(RAND_MAX / order->share) + 1.0;
+            double seed = 1.0;
+            double position = (i - 1) * 1.0 / order->share;
+            if (position >= 0.9) {
+              seed = 8.0;
+            } else if (position >= 0.6) {
+              seed = 4.0;
+            } else if (position >= 0.3) {
+              seed = 2.0;
+            }
+
+            double deno = rand() / (double)(RAND_MAX / order->share) + seed;
 
             char str_deno[24] = {0};
             sprintf(str_deno, "%.8f", deno);

@@ -590,7 +590,17 @@ int envelope_put(bool real, json_t **result, market_t *m, uint32_t user_id, cons
         srand((unsigned)(create_time));
         for (size_t i = share; i > 1; --i)
         {
-            double deno = rand() / (double)(RAND_MAX / share) + 1.0;
+            double seed = 1.0;
+            double position = (i - 1) * 1.0 / share;
+            if (position >= 0.9) {
+              seed = 8.0;
+            } else if (position >= 0.6) {
+              seed = 4.0;
+            } else if (position >= 0.3) {
+              seed = 2.0;
+            }
+
+            double deno = rand() / (double)(RAND_MAX / share) + seed;
 
             char str_deno[24] = {0};
             sprintf(str_deno, "%.8f", deno);
