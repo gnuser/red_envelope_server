@@ -89,17 +89,6 @@ static int order_match_compare(const void *value1, const void *value2)
     if (order1->id == order2->id) {
         return 0;
     }
-    if (order1->type != order2->type) {
-        return 1;
-    }
-
-    int cmp;
-    if (order1->side == MARKET_ORDER_SIDE_ASK) {
-    } else {
-    }
-    if (cmp != 0) {
-        return cmp;
-    }
 
     return order1->id > order2->id ? 1 : -1;
 }
@@ -503,6 +492,19 @@ int market_cancel_order(bool real, json_t **result, market_t *m, order_t *order)
     return 0;
 }
 
+void dump_envelopes(skiplist_t *list) {
+  for (int i = list->level - 1; i >= 0; --i) {
+    printf("level %d: ", i);
+    skiplist_node *node = list->header->forward[i];
+    while (node) {
+      order_t * order = (order_t*)node->value;
+      printf("%d -> %f, ", order->id, order->leave);
+      node = node->forward[i];
+    }
+    printf("\n");
+  }
+}
+
 int envelope_put(bool real, json_t **result, market_t *m, uint32_t user_id, const char *asset, const char *supply,
                         uint32_t share, uint32_t type, uint32_t expire_time, double create_time)
 {
@@ -590,6 +592,8 @@ int envelope_put(bool real, json_t **result, market_t *m, uint32_t user_id, cons
         srand((unsigned)(create_time));
         for (size_t i = share; i > 1; --i)
         {
+            // srand((unsigned)(create_time));
+            // double deno = rand() / (double)(RAND_MAX / share) + 1.0;
             double seed = 1.0;
             double position = (i - 1) * 1.0 / share;
             if (position >= 0.9) {
@@ -647,6 +651,7 @@ int envelope_put(bool real, json_t **result, market_t *m, uint32_t user_id, cons
         log_fatal("order_put fail: %d, order: %"PRIu64"", ret, order->id);
     }
 
+    //dump_envelopes(m->asks);
     return 0;
 }
 
@@ -757,7 +762,7 @@ int envelope_open(bool real, json_t **result, market_t *m, uint32_t user_id, ord
             order_finish(real, m, order);
         }
     }
-
+    //dump_envelopes(m->asks);
     return 0;
 }
 
