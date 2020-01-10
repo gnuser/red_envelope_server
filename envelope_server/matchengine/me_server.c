@@ -153,9 +153,12 @@ static int on_cmd_asset_list(nw_ses *ses, rpc_pkg *pkg, json_t *params)
 
 static int on_cmd_asset_update(nw_ses *ses, rpc_pkg *pkg, json_t *params)
 {
-    if (json_array_size(params) != 0)
+    if (json_array_size(params) != 1)
         return reply_error_invalid_argument(ses, pkg);
-    
+
+    if (!json_is_string(json_array_get(params, 0))) 
+        return reply_error_invalid_argument(ses, pkg);
+
     const char *asset = json_string_value(json_array_get(params, 0));
    
     int prec = asset_prec_show(asset);
