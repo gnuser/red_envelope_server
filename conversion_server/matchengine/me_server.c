@@ -589,7 +589,7 @@ int on_cmd_conversion_put_conversion(nw_ses *ses, rpc_pkg *pkg, json_t *params)
         mpd_t *pledge_money_amount = mpd_new(&mpd_ctx);
         mpd_mul(pledge_money_amount, amount, order->price, &mpd_ctx);
 	
-	mpd_rescale(pledge_money_amount, pledge_money_amount, -9, &mpd_ctx);
+	    mpd_rescale(pledge_money_amount, pledge_money_amount, -9, &mpd_ctx);
         sds pledge_amount = mpd_to_sci(pledge_money_amount, 0);
         log_info("conversion taker:  pledge");
         if ( !pledge_conversion(conversion_id, user_id,money_name,pledge_amount, PLEDGE) )
@@ -670,7 +670,7 @@ static int on_cmd_market_update(nw_ses *ses, rpc_pkg *pkg, json_t *params)
     if (!json_is_string(json_array_get(params, 2)))
         return reply_error_invalid_argument(ses, pkg);
 
-    int ret = init_asset_and_market(true);
+    int ret = init_asset_and_conversion_market();
     if (ret < 0) {
         error(EXIT_FAILURE, errno, "market update fail: %d", ret);
     }
@@ -683,23 +683,24 @@ static int on_cmd_asset_update(nw_ses *ses, rpc_pkg *pkg, json_t *params)
     if (json_array_size(params) != 1)
         return reply_error_invalid_argument(ses, pkg);
 
-    if (!json_is_string(json_array_get(params, 0)))
+    if (!json_is_string(json_array_get(params, 0))) 
         return reply_error_invalid_argument(ses, pkg);
 
     const char *asset = json_string_value(json_array_get(params, 0));
-    int ret = asset_update(asset);
+   
+    int prec = asset_prec_show(asset);
+    if (prec >= 0)
+        return reply_error_invalid_argument(ses, pkg);
+
+    int ret = init_asset_and_conversion_market();
     if (ret < 0) {
-        error(EXIT_FAILURE, errno, "asset update1 fail: %d", ret);
+        error(EXIT_FAILURE, errno, "init_asset_and_market update fail: %d", ret);
     }
 
-    ret = init_asset_and_market(false);
-    if (ret < 0) {
-        error(EXIT_FAILURE, errno, "asset update2 fail: %d", ret);
-    }
-    
-    init_balance();
+    update_balance();
+
     return reply_success(ses, pkg);
-}   
+} 
 
 static json_t *get_asset_summary(const char *name)
 {

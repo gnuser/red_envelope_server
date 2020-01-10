@@ -125,6 +125,16 @@ int init_balance()
     return 0;
 }
 
+int update_balance()
+{
+    struct asset_type type;
+    type.prec_save = settings.assets[settings.asset_num - 1].prec_save;
+    type.prec_show = settings.assets[settings.asset_num - 1].prec_show;
+    if (dict_add(dict_asset, settings.assets[settings.asset_num - 1].name, &type) == NULL)
+        return -__LINE__;
+    return 0;
+}
+
 static struct asset_type *get_asset_type(const char *asset)
 {
     dict_entry *entry = dict_find(dict_asset, asset);

@@ -214,29 +214,29 @@ static int init_conversion_market()
     {
         for(size_t j = i+1; j < settings.asset_num; ++j)
         {
-	    const char *min_amount = "0.00001";
+	        const char *min_amount = "0.00001";
             settings.markets[k].min_amount = decimal(min_amount, 0);
             settings.markets[k].money = sdsnewlen(settings.assets[i].name, strlen(settings.assets[i].name));
             settings.markets[k].stock = sdsnewlen(settings.assets[j].name, strlen(settings.assets[j].name));
             settings.markets[k].fee_prec = 4;
-	    settings.markets[k].stock_prec = 9;
+	        settings.markets[k].stock_prec = 9;
             settings.markets[k].money_prec = 9;
-	    sds tmp = sdsempty();
-	    sdscpy(tmp, settings.markets[k].stock);	
-	    settings.markets[k].name = sdscat(tmp, settings.markets[k].money);
+	        sds tmp = sdsempty();
+	        sdscpy(tmp, settings.markets[k].stock);	
+	        settings.markets[k].name = sdscat(tmp, settings.markets[k].money);
 
             k++;
             
-	    settings.markets[k].min_amount = decimal(min_amount, 0);
+	        settings.markets[k].min_amount = decimal(min_amount, 0);
             settings.markets[k].money = sdsnewlen(settings.assets[j].name, strlen(settings.assets[j].name));
             settings.markets[k].stock = sdsnewlen(settings.assets[i].name, strlen(settings.assets[i].name));
             settings.markets[k].fee_prec = 4;
             settings.markets[k].stock_prec = 9;
             settings.markets[k].money_prec = 9; 
-	    sds tmp1 = sdsempty();
-	    sdscpy(tmp1, settings.markets[k].stock);	
-	    settings.markets[k].name = sdscat(tmp1, settings.markets[k].money);
-	    k++;
+    	    sds tmp1 = sdsempty();
+    	    sdscpy(tmp1, settings.markets[k].stock);	
+    	    settings.markets[k].name = sdscat(tmp1, settings.markets[k].money);
+    	    k++;
         }
     }
     return 0;
@@ -336,7 +336,7 @@ int asset_update(const char *asset)
     return 0; 
 }
 
-int init_asset_and_market(bool market)
+int init_asset_and_conversion_market()
 {
     MYSQL *conn = mysql_connect(&settings.db_bitasia);
     if (conn == NULL) {
@@ -347,8 +347,6 @@ int init_asset_and_market(bool market)
 
     init_asset_from_db(conn);
     init_conversion_market();
-    //if (market)
-    //    init_market_from_db(conn);
     mysql_close(conn);
     printf("init asset  market \n");
     return 0;

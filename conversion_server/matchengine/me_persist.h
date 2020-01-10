@@ -17,7 +17,7 @@ int clear_slice(time_t timestamp);
 
 int init_asset_from_db(MYSQL *conn);
 int init_market_from_db(MYSQL *conn);
-int init_asset_and_market(bool market);
+int init_asset_and_conversion_market();
 
 int asset_update(const char *asset);
 

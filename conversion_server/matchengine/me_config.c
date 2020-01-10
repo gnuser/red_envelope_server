@@ -114,7 +114,7 @@ static int read_config_from_json(json_t *root)
         printf("load bitasia db config fail: %d\n", ret);
         return -__LINE__;
     }
-    ret = init_asset_and_market(true);
+    ret = init_asset_and_conversion_market();
     if (ret < 0) {
         error(EXIT_FAILURE, errno, "init asset and market fail: %d", ret);
     }
