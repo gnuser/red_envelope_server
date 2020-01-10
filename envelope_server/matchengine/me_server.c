@@ -155,13 +155,21 @@ static int on_cmd_asset_update(nw_ses *ses, rpc_pkg *pkg, json_t *params)
 {
     if (json_array_size(params) != 0)
         return reply_error_invalid_argument(ses, pkg);
+    
+    const char *asset = json_string_value(json_array_get(params, 0));
+   
+    int prec = asset_prec_show(asset);
+    if (prec >= 0)
+        return reply_error_invalid_argument(ses, pkg);
 
-    int ret = init_asset_and_market(false);
-    if (ret < 0) {
-        error(EXIT_FAILURE, errno, "asset update fail: %d", ret);
-    }
+    settings.assets[settings.asset_num].id = settings.asset_num + 1;
+    settings.assets[settings.asset_num].name = sdsnewlen(asset, strlen(asset)); 
+    settings.assets[settings.asset_num].prec_save = 20;
+    settings.assets[settings.asset_num].prec_show = 8;
+    settings.asset_num++;
 
-    init_balance();
+    update_balance();
+
     return reply_success(ses, pkg);
 }
 

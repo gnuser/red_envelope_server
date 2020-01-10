@@ -21,6 +21,7 @@ struct balance_key {
 };
 
 int init_balance(void);
+int update_balance();
 
 bool asset_exist(const char *asset);
 int asset_prec(const char *asset);

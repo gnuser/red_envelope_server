@@ -214,32 +214,6 @@ int init_market_from_db(MYSQL *conn)
     return 0;
 }
 
-int asset_update(const char *asset)
-{
-    MYSQL *conn = mysql_connect(&settings.db_history);
-    if (conn == NULL) {
-        log_error("connect mysql fail");
-        log_stderr("connect mysql fail");
-        return -__LINE__;
-    }
-
-    sds sql = sdsempty();
-    sql = sdscatprintf(sql, "INSERT INTO system_coin_type (short_name)VALUES(\"%s\")", asset);
-
-    log_stderr("update asset");
-    log_trace("exec sql: %s", sql);
-    int ret = mysql_real_query(conn, sql, sdslen(sql));
-    if (ret != 0) {
-        log_error("exec sql: %s fail: %d %s", sql, mysql_errno(conn), mysql_error(conn));
-        log_stderr("exec sql: %s fail: %d %s", sql, mysql_errno(conn), mysql_error(conn));
-        sdsfree(sql);
-        return -__LINE__;
-    }
-    sdsfree(sql);
-
-    return 0;
-}
-
 int init_asset_and_market(bool market)
 {
     MYSQL *conn = mysql_connect(&settings.db_history);
